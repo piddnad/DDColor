@@ -72,7 +72,7 @@ sh scripts/inference.sh
 1. Dataset preparation: download [ImageNet](https://www.image-net.org/) dataset, or prepare any custom dataset of your own. Use the following script to get the dataset list file:
 
 ```
-python data_list/get_meta_file.txt
+python data_list/get_meta_file.py
 ```
 
 2. Download pretrain weights for [ConvNeXt](https://dl.fbaipublicfiles.com/convnext/convnext_large_22k_224.pth) and [InceptionV3](https://download.pytorch.org/models/inception_v3_google-1a9a5a14.pth) and put it into `pretrain` folder.
