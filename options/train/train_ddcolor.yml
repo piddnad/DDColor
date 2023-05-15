@@ -1,0 +1,170 @@
+# general settings
+name: train_ddcolor_l
+model_type: ColorModel
+scale: 1
+num_gpu: 4
+manual_seed: 0
+queue_size: 64
+
+# dataset and data loader settings
+datasets:
+  train:
+    name: ImageNet
+    type: LabDataset
+    dataroot_gt: /
+    meta_info_file: ['data_list/imagenet.txt']
+    io_backend:
+      type: disk
+
+    gt_size: 256
+
+    # augmentation config
+    ## flip & rotate90
+    use_hflip: True
+    use_rot: False
+
+    # cutmix / fmix
+    do_cutmix: False
+    cutmix_p: 0.5
+    do_fmix: False
+    fmix_p: 0.5
+
+    # data loader
+    use_shuffle: true
+    num_worker_per_gpu: 8
+    batch_size_per_gpu: 4
+    dataset_enlarge_ratio: 1
+    prefetch_mode: ~
+
+  # Uncomment these for validation
+  val:
+    name: ImageNet
+    type: LabDataset
+    # dataroot_gt: path_to_gt
+    dataroot_gt: /
+    meta_info_file: 'data_list/imagenet_val_5k.txt'
+    gt_size: 256
+    io_backend:
+      type: disk
+      
+    # cutmix / fmix
+    do_cutmix: False
+    cutmix_p: 0.5
+    do_fmix: False
+    fmix_p: 0.5
+
+# network structures
+network_g:
+  type: DDColor
+  encoder_name: convnext-l
+  decoder_name: MultiScaleColorDecoder
+
+  num_queries: 100
+  num_scales: 3
+  dec_layers: 9
+
+  last_norm: Spectral
+  num_output_channels: 2
+  do_normalize: False
+
+network_d:
+  type: DynamicUNetDiscriminator
+  nf: 64
+  n_channels: 3
+
+
+# path
+path:
+  pretrain_network_g: ~
+  strict_load_g: true
+  resume_state: ~
+
+# training settings
+train:
+  color_enhance: True
+  color_enhance_factor: 1.2
+  optim_g:
+    type: AdamW
+    lr: !!float 1e-4
+    weight_decay: 0.01
+    betas: [0.9, 0.99]
+  optim_d:
+    type: Adam
+    lr: !!float 1e-4
+    weight_decay: 0
+    betas: [0.9, 0.99]
+
+  scheduler:
+    type: MultiStepLR
+    milestones: [80000, 120000, 160000, 200000, 240000, 280000, 320000, 360000]
+    gamma: 0.5
+
+  total_iter: 400000
+  warmup_iter: -1  # no warm up
+
+  # losses
+  pixel_opt:
+    type: L1Loss
+    loss_weight: 0.1
+    reduction: mean
+  perceptual_opt:
+    type: PerceptualLoss
+    layer_weights:
+      'conv1_1': 0.0625
+      'conv2_1': 0.125
+      'conv3_1': 0.25
+      'conv4_1': 0.5
+      'conv5_1': 1.0
+    vgg_type: vgg16_bn
+    use_input_norm: true
+    range_norm: false
+    perceptual_weight: 5.0
+    style_weight: 0
+    criterion: l1
+  gan_opt:
+    type: GANLoss
+    gan_type: vanilla
+    real_label_val: 1.0
+    fake_label_val: 0.0
+    loss_weight: 1.0
+  colorfulness_opt:
+    type: ColorfulnessLoss
+    loss_weight: 0.5
+
+# Uncomment these for validation
+# validation settings
+val:
+  val_freq: !!float 1e4
+  save_img: False
+  pbar: True
+
+  metrics:
+      fid: # metric name, can be arbitrary
+        type: calculate_fid
+        better: lower
+      cf:
+        type: calculate_cf
+        better: higher
+#     psnr:
+#       type: calculate_psnr
+#       crop_border: 4
+#       test_y_channel: false
+
+# logging settings
+logger:
+  print_freq: 100
+  save_snapshot_freq: !!float 1e3
+  save_snapshot_verbose: True
+  save_checkpoint_freq: !!float 1e4
+  use_tb_logger: true
+  wandb:
+    project: ~
+    resume_id: ~
+
+
+# dist training settings
+dist_params:
+  backend: nccl
+  port: 29500
+
+find_unused_parameters: true
