@@ -59,7 +59,16 @@ You can find the model file `pytorch_model.pt` in the local path ~/.cache/models
 
 ### Inference from local
 
-1. Put the pretraining model file into `pretrain` folder.
+1. Download the pretraining model file by simply running:
+
+```
+from modelscope.hub.snapshot_download import snapshot_download
+
+model_dir = snapshot_download('damo/cv_ddcolor_image-colorization', cache_dir='./modelscope')
+print('model assets saved to %s'%model_dir)
+```
+
+then the weights will be `modelscope/damo/cv_ddcolor_image-colorization/pytorch_model.pt`.
 
 2. Run 
 ```
