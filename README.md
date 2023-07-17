@@ -1,16 +1,16 @@
-# DDColor: Towards Photo-Realistic and Semantic-Aware Image Colorization via Dual Decoders
+# DDColor
 
-**This is the official implementation of our paper, *DDColor: Towards Photo-Realistic and Semantic-Aware Image Colorization via Dual Decoders*.**
+Official PyTorch implementation of ICCV 2023 Paper "DDColor: Towards Photo-Realistic and Semantic-Aware Image Colorization via Dual Decoders"
 
-Xiaoyang Kang, Tao Yang, Wenqi Ouyang, Peiran Ren, Lingzhi Li, Xuansong Xie
-
-Alibaba Group
+[![arXiv](https://img.shields.io/badge/arXiv-2212.11613-b31b1b.svg)](https://arxiv.org/abs/2212.11613)
+[![ModelScope demo](https://img.shields.io/badge/ModelScope-Demo-blue)](https://www.modelscope.cn/models/damo/cv_ddcolor_image-colorization/summary)
+![visitors](https://visitor-badge.laobi.icu/badge?page_id=piddnad/DDColor)
 
 ## 🔥 News
 
-(2023-05-15) Code release for training and testing.
+* [2023-05-15] Code release for training and testing.
 
-(2023-05-05) The online demo is available on [ModelScope](https://modelscope.cn/models/damo/cv_ddcolor_image-colorization/summary).
+* [2023-05-05] The online demo is available on [ModelScope](https://modelscope.cn/models/damo/cv_ddcolor_image-colorization/summary).
 
 ## Online Demo
 
@@ -116,4 +116,4 @@ We thank the authors of BasicSR for the awesome training pipeline.
 
 > Xintao Wang, Ke Yu, Kelvin C.K. Chan, Chao Dong and Chen Change Loy. BasicSR: Open Source Image and Video Restoration Toolbox. https://github.com/xinntao/BasicSR, 2020.
 
-We also borrow some codes from [ColorFormer](https://github.com/jixiaozhong/ColorFormer), [BigColor](https://github.com/KIMGEONUNG/BigColor), [ConvNeXt](https://github.com/facebookresearch/ConvNeXt), [Mask2Former](https://github.com/facebookresearch/Mask2Former), and [DETR](https://github.com/facebookresearch/detr), Thank them for the excellent work.
+Some codes are adapted from [ColorFormer](https://github.com/jixiaozhong/ColorFormer), [BigColor](https://github.com/KIMGEONUNG/BigColor), [ConvNeXt](https://github.com/facebookresearch/ConvNeXt), [Mask2Former](https://github.com/facebookresearch/Mask2Former), and [DETR](https://github.com/facebookresearch/detr). Thanks for their excellent work!
