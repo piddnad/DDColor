@@ -1,10 +1,14 @@
 # DDColor
 
-Official PyTorch implementation of ICCV 2023 Paper "DDColor: Towards Photo-Realistic and Semantic-Aware Image Colorization via Dual Decoders"
+Official PyTorch implementation of ICCV 2023 Paper "DDColor: Towards Photo-Realistic Image Colorization via Dual Decoders"
 
 [![arXiv](https://img.shields.io/badge/arXiv-2212.11613-b31b1b.svg)](https://arxiv.org/abs/2212.11613)
 [![ModelScope demo](https://img.shields.io/badge/ModelScope-Demo-blue)](https://www.modelscope.cn/models/damo/cv_ddcolor_image-colorization/summary)
 ![visitors](https://visitor-badge.laobi.icu/badge?page_id=piddnad/DDColor)
+
+<p align="center">
+  <img src="assets/teaser.png" width="1000px">
+</p>
 
 ## 🔥 News
 
@@ -101,7 +105,7 @@ If our work is helpful for your research, please consider citing:
 
 ```
 @article{kang2022ddcolor,
-  title={DDColor: Towards Photo-Realistic and Semantic-Aware Image Colorization via Dual Decoders},
+  title={DDColor: Towards Photo-Realistic Image Colorization via Dual Decoders},
   author={Kang, Xiaoyang and Yang, Tao and Ouyang, Wenqi and Ren, Peiran and Li, Lingzhi and Xie, Xuansong},
   journal={arXiv preprint arXiv:2212.11613},
   year={2022}
