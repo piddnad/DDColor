@@ -56,9 +56,11 @@ datasets:
 # network structures
 network_g:
   type: DDColor
+  
   encoder_name: convnext-l
-  decoder_name: MultiScaleColorDecoder
+  encoder_from_pretrain: True
 
+  decoder_name: MultiScaleColorDecoder
   num_queries: 100
   num_scales: 3
   dec_layers: 9

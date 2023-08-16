@@ -6,9 +6,6 @@ from basicsr.archs.ddcolor_arch_utils.convnext import ConvNeXt
 from basicsr.archs.ddcolor_arch_utils.transformer_utils import SelfAttentionLayer, CrossAttentionLayer, FFNLayer, MLP
 from basicsr.archs.ddcolor_arch_utils.position_encoding import PositionEmbeddingSine
 from basicsr.archs.ddcolor_arch_utils.transformer import Transformer
-
-
-
 from basicsr.utils.registry import ARCH_REGISTRY
 
 
@@ -26,10 +23,11 @@ class DDColor(nn.Module):
                  do_normalize=False,
                  num_queries=256,
                  num_scales=3,
-                 dec_layers=9):
+                 dec_layers=9,
+                 encoder_from_pretrain=False):
         super().__init__()
 
-        self.encoder = Encoder(encoder_name, ['norm0', 'norm1', 'norm2', 'norm3'])
+        self.encoder = Encoder(encoder_name, ['norm0', 'norm1', 'norm2', 'norm3'], from_pretrain=encoder_from_pretrain)
         self.encoder.eval()
         test_input = torch.randn(1, num_input_channels, *input_size)
         self.encoder(test_input)
@@ -141,25 +139,26 @@ class Decoder(nn.Module):
 
 class Encoder(nn.Module):
 
-    def __init__(self, encoder_name, hook_names, **kwargs):
-        super().__init__()           
+    def __init__(self, encoder_name, hook_names, from_pretrain, **kwargs):
+        super().__init__()
+ 
         if encoder_name == 'convnext-t' or encoder_name == 'convnext':
             self.arch = ConvNeXt()
-            self.load('pretrain/convnext_tiny_22k_224.pth')
         elif encoder_name == 'convnext-s':
             self.arch = ConvNeXt(depths=[3, 3, 27, 3], dims=[96, 192, 384, 768])
-            self.load('pretrain/convnext_small_22k_224.pth')
         elif encoder_name == 'convnext-b':
             self.arch = ConvNeXt(depths=[3, 3, 27, 3], dims=[128, 256, 512, 1024])
-            self.load('pretrain/convnext_base_22k_224.pth')
         elif encoder_name == 'convnext-l':
             self.arch = ConvNeXt(depths=[3, 3, 27, 3], dims=[192, 384, 768, 1536])
-            self.load('pretrain/convnext_large_22k_224.pth')
         else:
             raise NotImplementedError
 
+        self.encoder_name = encoder_name
         self.hook_names = hook_names
         self.hooks = self.setup_hooks()
+
+        if from_pretrain:
+            self.load_pretrain_model()
 
     def setup_hooks(self):
         hooks = [Hook(self.arch._modules[name]) for name in self.hook_names]
@@ -168,6 +167,19 @@ class Encoder(nn.Module):
     def forward(self, x):
         return self.arch(x)
     
+    def load_pretrain_model(self):
+        if self.encoder_name == 'convnext-t' or self.encoder_name == 'convnext':
+            self.load('pretrain/convnext_tiny_22k_224.pth')
+        elif self.encoder_name == 'convnext-s':
+            self.load('pretrain/convnext_small_22k_224.pth')
+        elif self.encoder_name == 'convnext-b':
+            self.load('pretrain/convnext_base_22k_224.pth')
+        elif self.encoder_name == 'convnext-l':
+            self.load('pretrain/convnext_large_22k_224.pth')
+        else:
+            raise NotImplementedError
+        print('Loaded pretrained convnext model.')
+
     def load(self, path):
         from basicsr.utils import get_root_logger
         logger = get_root_logger()

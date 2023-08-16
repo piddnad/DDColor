@@ -45,7 +45,7 @@ class ImageColorizationPipeline(object):
 
         self.model.load_state_dict(
             torch.load(model_path, map_location=torch.device('cpu'))['params'],
-            strict=True)
+            strict=False)
         self.model.eval()
 
     @torch.no_grad()
@@ -64,19 +64,15 @@ class ImageColorizationPipeline(object):
         img_gray_lab = np.concatenate((img_l, np.zeros_like(img_l), np.zeros_like(img_l)), axis=-1)
         img_gray_rgb = cv2.cvtColor(img_gray_lab, cv2.COLOR_LAB2RGB)
 
-        # img_gray_rgb = np.array(img_gray_rgb) / 255.0
-        tensor_gray_rgb = torch.from_numpy(img_gray_rgb.transpose((2, 0, 1))).float()
-        tensor_gray_rgb = tensor_gray_rgb.unsqueeze(0).to(self.device)
-
-        output_ab = self.model(tensor_gray_rgb).cpu()  # 1, 2, 512, 512
+        tensor_gray_rgb = torch.from_numpy(img_gray_rgb.transpose((2, 0, 1))).float().unsqueeze(0).to(self.device)
+        output_ab = self.model(tensor_gray_rgb).cpu()  # (1, 2, self.height, self.width)
 
         # resize ab -> concat original l -> rgb
-        output_ab_resize = F.interpolate(output_ab, size=(self.height, self.width))
-        output_ab_resize = output_ab_resize[0].float().numpy().transpose(1, 2, 0)
-        out_lab = np.concatenate((orig_l, output_ab_resize), axis=-1)
-        out_bgr = cv2.cvtColor(out_lab, cv2.COLOR_LAB2BGR)
+        output_ab_resize = F.interpolate(output_ab, size=(self.height, self.width))[0].float().numpy().transpose(1, 2, 0)
+        output_lab = np.concatenate((orig_l, output_ab_resize), axis=-1)
+        output_bgr = cv2.cvtColor(output_lab, cv2.COLOR_LAB2BGR)
 
-        output_img = (out_bgr * 255.0).round().astype(np.uint8)    
+        output_img = (output_bgr * 255.0).round().astype(np.uint8)    
 
         return output_img
 
