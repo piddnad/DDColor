@@ -6,11 +6,19 @@ Official PyTorch implementation of ICCV 2023 Paper "DDColor: Towards Photo-Reali
 [![ModelScope demo](https://img.shields.io/badge/ModelScope-Demo-blue)](https://www.modelscope.cn/models/damo/cv_ddcolor_image-colorization/summary)
 ![visitors](https://visitor-badge.laobi.icu/badge?page_id=piddnad/DDColor)
 
+Xiaoyang Kang, Tao Yang, Wenqi Ouyang, Peiran Ren, Lingzhi Li, Xuansong Xie
+
+DAMO Academy, Alibaba Group
+
+
 <p align="center">
   <img src="assets/teaser.png" width="1000px">
 </p>
 
+
 ## 🔥 News
+
+* [2023-09-07] Update model zoo.
 
 * [2023-05-15] Code release for training and testing.
 
@@ -22,21 +30,25 @@ We provide online demo via [ModelScope](https://modelscope.cn/models/damo/cv_ddc
 
 ## Installation
 
-Requirements
+### Requirements
 
-- Python >= 3.7 (Recommend to use Anaconda)
+- Python >= 3.7
 - PyTorch >= 1.7
+
+### Install with conda (Recommend)
 
 ```
 conda create -n ddcolor python=3.8
 conda activate ddcolor
+
 pip install -r requirements.txt
+
 python3 setup.py develop  # install basicsr
 ```
 
-## Usage
+## Quick Start
 
-### Inference with Modelscope
+### Inference with modelscope library
 
 1. Install modelscope:
 
@@ -61,9 +73,9 @@ It will automatically download the DDColor models.
 
 You can find the model file `pytorch_model.pt` in the local path ~/.cache/modelscope/hub/damo.
 
-### Inference from local
+### Inference from local script
 
-1. Download the pretraining model file by simply running:
+1. Download the pretrained model file by simply running:
 
 ```
 from modelscope.hub.snapshot_download import snapshot_download
@@ -79,6 +91,10 @@ then the weights will be `modelscope/damo/cv_ddcolor_image-colorization/pytorch_
 sh scripts/inference.sh
 ```
 
+## Model Zoo
+
+We provide several different versions of pretrained models, please check out [Model Zoo](MODEL_ZOO.md).
+
 
 ## Train
 
@@ -88,7 +104,7 @@ sh scripts/inference.sh
 python data_list/get_meta_file.py
 ```
 
-2. Download pretrain weights for [ConvNeXt](https://dl.fbaipublicfiles.com/convnext/convnext_large_22k_224.pth) and [InceptionV3](https://download.pytorch.org/models/inception_v3_google-1a9a5a14.pth) and put it into `pretrain` folder.
+2. Download pretrained weights for [ConvNeXt](https://dl.fbaipublicfiles.com/convnext/convnext_large_22k_224.pth) and [InceptionV3](https://download.pytorch.org/models/inception_v3_google-1a9a5a14.pth) and put it into `pretrain` folder.
 
 3. Specify 'meta_info_file' and other options in `options/train/train_ddcolor.yml`.
 
@@ -97,7 +113,6 @@ python data_list/get_meta_file.py
 ```
 sh scripts/train.sh
 ```
-
 
 ## Citation
 
