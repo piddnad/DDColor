@@ -1,18 +1,25 @@
-# DDColor
+# 🎨 DDColor
 
-Official PyTorch implementation of ICCV 2023 Paper "DDColor: Towards Photo-Realistic Image Colorization via Dual Decoders"
+Official PyTorch implementation of ICCV 2023 Paper "DDColor: Towards Photo-Realistic Image Colorization via Dual Decoders".
 
 [![arXiv](https://img.shields.io/badge/arXiv-2212.11613-b31b1b.svg)](https://arxiv.org/abs/2212.11613)
 [![ModelScope demo](https://img.shields.io/badge/ModelScope-Demo-blue)](https://www.modelscope.cn/models/damo/cv_ddcolor_image-colorization/summary)
 ![visitors](https://visitor-badge.laobi.icu/badge?page_id=piddnad/DDColor)
 
-Xiaoyang Kang, Tao Yang, Wenqi Ouyang, Peiran Ren, Lingzhi Li, Xuansong Xie
+> Xiaoyang Kang, Tao Yang, Wenqi Ouyang, Peiran Ren, Lingzhi Li, Xuansong Xie
+>
+> *DAMO Academy, Alibaba Group*
 
-DAMO Academy, Alibaba Group
-
+🪄 DDColor can provide vivid and natural colorization for historical black and white old photos.
 
 <p align="center">
-  <img src="assets/teaser.png" width="1000px">
+  <img src="assets/teaser.png" width="100%">
+</p>
+
+🎲 It can even colorize/recolor landscapes from anime games, transforming your animated scenery into a realistic real-life style!
+
+<p align="center">
+  <img src="assets/anime_landscapes.png" width="100%">
 </p>
 
 
@@ -22,7 +29,7 @@ DAMO Academy, Alibaba Group
 
 * [2023-05-15] Code release for training and testing.
 
-* [2023-05-05] The online demo is available on [ModelScope](https://modelscope.cn/models/damo/cv_ddcolor_image-colorization/summary).
+* [2023-05-05] The online demo is available.
 
 ## Online Demo
 
