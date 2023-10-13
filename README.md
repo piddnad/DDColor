@@ -35,6 +35,15 @@ Official PyTorch implementation of ICCV 2023 Paper "DDColor: Towards Photo-Reali
 
 We provide [online demo](https://modelscope.cn/models/damo/cv_ddcolor_image-colorization/summary) via ModelScope. Feel free to try it out!
 
+## Methods
+
+*In short:* DDColor uses multi-scale visual features to optimize **learnable color tokens** (i.e. color queries) and achieves state-of-the-art performance on automatic image colorization.
+
+<p align="center">
+  <img src="assets/network_arch.jpg" width="100%">
+</p>
+
+
 ## Installation
 
 ### Requirements
