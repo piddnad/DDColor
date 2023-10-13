@@ -16,7 +16,7 @@ Official PyTorch implementation of ICCV 2023 Paper "DDColor: Towards Photo-Reali
   <img src="assets/teaser.png" width="100%">
 </p>
 
-🎲 It can even colorize/recolor landscapes from anime games, transforming your animated scenery into a realistic real-life style!
+🎲 It can even colorize/recolor landscapes from anime games, transforming your animated scenery into a realistic real-life style! (Image source: Genshin Impact)
 
 <p align="center">
   <img src="assets/anime_landscapes.png" width="100%">
@@ -33,7 +33,7 @@ Official PyTorch implementation of ICCV 2023 Paper "DDColor: Towards Photo-Reali
 
 ## Online Demo
 
-We provide online demo via [ModelScope](https://modelscope.cn/models/damo/cv_ddcolor_image-colorization/summary). Feel free to try it out!
+We provide [online demo](https://modelscope.cn/models/damo/cv_ddcolor_image-colorization/summary) via ModelScope. Feel free to try it out!
 
 ## Installation
 
