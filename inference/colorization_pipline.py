@@ -10,7 +10,7 @@ import torch.nn.functional as F
 
 class ImageColorizationPipeline(object):
 
-    def __init__(self, model_path, input_size=512):
+    def __init__(self, model_path, input_size=256, model_size='large'):
         
         self.input_size = input_size
         if torch.cuda.is_available():
@@ -18,11 +18,16 @@ class ImageColorizationPipeline(object):
         else:
             self.device = torch.device('cpu')
 
+        if model_size == 'tiny':
+            self.encoder_name = 'convnext-t'
+        else:
+            self.encoder_name = 'convnext-l'
+
         self.decoder_type = "MultiScaleColorDecoder"
 
         if self.decoder_type == 'MultiScaleColorDecoder':
             self.model = DDColor(
-                'convnext-l',
+                encoder_name=self.encoder_name,
                 decoder_name='MultiScaleColorDecoder',
                 input_size=[self.input_size, self.input_size],
                 num_output_channels=2,
@@ -34,7 +39,7 @@ class ImageColorizationPipeline(object):
             ).to(self.device)
         else:
             self.model = DDColor(
-                'convnext-l',
+                encoder_name=self.encoder_name,
                 decoder_name='SingleColorDecoder',
                 input_size=[self.input_size, self.input_size],
                 num_output_channels=2,
@@ -83,14 +88,15 @@ def main():
     parser.add_argument('--input', type=str, default='figure/', help='input test image folder or video path')
     parser.add_argument('--output', type=str, default='results', help='output folder or video path')
     parser.add_argument('--input_size', type=int, default=512, help='input size for model')
-
+    parser.add_argument('--model_size', type=str, default='large', help='ddcolor model size')
     args = parser.parse_args()
 
+    print(f'Output path: {args.output}')
     os.makedirs(args.output, exist_ok=True)
     img_list = os.listdir(args.input)
     assert len(img_list) > 0
 
-    colorizer = ImageColorizationPipeline(model_path=args.model_path, input_size=args.input_size)
+    colorizer = ImageColorizationPipeline(model_path=args.model_path, input_size=args.input_size, model_size=args.model_size)
 
     for name in tqdm(img_list):
         img = cv2.imread(os.path.join(args.input, name))

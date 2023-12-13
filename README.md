@@ -27,7 +27,9 @@ Official PyTorch implementation of ICCV 2023 Paper "DDColor: Towards Photo-Reali
 
 ## 🔥 News
 
-* [2023-09-07] Update model zoo.
+* [2023-12-13] Release the DDColor-tiny.
+
+* [2023-09-07] Add the model zoo.
 
 * [2023-05-15] Code release for training and testing.
 
