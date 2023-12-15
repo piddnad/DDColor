@@ -60,7 +60,7 @@ We provide [online demo](https://modelscope.cn/models/damo/cv_ddcolor_image-colo
 ```
 conda create -n ddcolor python=3.8
 conda activate ddcolor
-
+pip install torch==1.7.1+cu110 torchvision==0.8.2+cu110 torchaudio==0.7.2 -f https://download.pytorch.org/whl/torch_stable.html
 pip install -r requirements.txt
 
 python3 setup.py develop  # install basicsr
