@@ -7,7 +7,7 @@ Official PyTorch implementation of ICCV 2023 Paper "DDColor: Towards Photo-Reali
 [![HuggingFace](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Models-FF8000)](https://huggingface.co/piddnad/DDColor-models)
 [![ModelScope demo](https://img.shields.io/badge/%F0%9F%91%BE%20ModelScope-Demo-8A2BE2)](https://www.modelscope.cn/models/damo/cv_ddcolor_image-colorization/summary)
 ![visitors](https://visitor-badge.laobi.icu/badge?page_id=piddnad/DDColor)
-[![Replicate](https://replicate.com/cjwbw/ddcolor/badge)](https://replicate.com/cjwbw/ddcolor) 
+[![Replicate](https://replicate.com/cjwbw/ddcolor/badge)](https://replicate.com/cjwbw/ddcolor)
 
 > Xiaoyang Kang, Tao Yang, Wenqi Ouyang, Peiran Ren, Lingzhi Li, Xuansong Xie
 >
@@ -28,22 +28,17 @@ Official PyTorch implementation of ICCV 2023 Paper "DDColor: Towards Photo-Reali
 
 ## 🔥 News
 
-* [2024-01-12] Replicate demo is added.
+* [2023-12-13] Release the DDColor-tiny pre-trained model!
 
-* [2023-12-13] Release the DDColor-tiny.
+* [2023-09-07] Add the Model Zoo and release three pretrained models!
 
-* [2023-09-07] Add the model zoo.
+* [2023-05-15] Code release for training and inference!
 
-* [2023-05-15] Code release for training and testing.
-
-* [2023-05-05] The online demo is available.
+* [2023-05-05] The online demo is available!
 
 ## Online Demo
 
 We provide [online demo](https://modelscope.cn/models/damo/cv_ddcolor_image-colorization/summary) via ModelScope. Feel free to try it out!
-
-You can also try the Replicate demo here: [![Replicate](https://replicate.com/cjwbw/ddcolor/badge)](https://replicate.com/cjwbw/ddcolor) 
-
 
 ## Methods
 
@@ -112,6 +107,8 @@ print('model assets saved to %s'%model_dir)
 
 then the weights will be `modelscope/damo/cv_ddcolor_image-colorization/pytorch_model.pt`.
 
+Or, download the model from [Hugging Face](https://huggingface.co/piddnad/DDColor-models).
+
 2. Run 
 ```
 sh scripts/inference.sh
@@ -145,16 +142,14 @@ sh scripts/train.sh
 If our work is helpful for your research, please consider citing:
 
 ```
-@article{kang2022ddcolor,
+@inproceedings{kang2023ddcolor,
   title={DDColor: Towards Photo-Realistic Image Colorization via Dual Decoders},
   author={Kang, Xiaoyang and Yang, Tao and Ouyang, Wenqi and Ren, Peiran and Li, Lingzhi and Xie, Xuansong},
-  journal={arXiv preprint arXiv:2212.11613},
-  year={2022}
+  booktitle={Proceedings of the IEEE/CVF International Conference on Computer Vision},
+  pages={328--338},
+  year={2023}
 }
 ```
-
-## License
-© Alibaba, 2023. For academic and non-commercial use only.
 
 ## Acknowledgments
 We thank the authors of BasicSR for the awesome training pipeline.
