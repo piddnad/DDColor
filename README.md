@@ -7,6 +7,7 @@ Official PyTorch implementation of ICCV 2023 Paper "DDColor: Towards Photo-Reali
 [![HuggingFace](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Models-FF8000)](https://huggingface.co/piddnad/DDColor-models)
 [![ModelScope demo](https://img.shields.io/badge/%F0%9F%91%BE%20ModelScope-Demo-8A2BE2)](https://www.modelscope.cn/models/damo/cv_ddcolor_image-colorization/summary)
 ![visitors](https://visitor-badge.laobi.icu/badge?page_id=piddnad/DDColor)
+[![Replicate](https://replicate.com/cjwbw/ddcolor/badge)](https://replicate.com/cjwbw/ddcolor)
 
 > Xiaoyang Kang, Tao Yang, Wenqi Ouyang, Peiran Ren, Lingzhi Li, Xuansong Xie
 >
@@ -26,6 +27,8 @@ Official PyTorch implementation of ICCV 2023 Paper "DDColor: Towards Photo-Reali
 
 
 ## 🔥 News
+
+* [2024-01-18] Add Replicate demo and API!
 
 * [2023-12-13] Release the DDColor-tiny pre-trained model!
 
