@@ -28,6 +28,8 @@ Official PyTorch implementation of ICCV 2023 Paper "DDColor: Towards Photo-Reali
 
 ## 🔥 News
 
+* [2024-01-18] Add Replicate demo and API!
+
 * [2023-12-13] Release the DDColor-tiny pre-trained model!
 
 * [2023-09-07] Add the Model Zoo and release three pretrained models!
