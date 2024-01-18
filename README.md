@@ -6,8 +6,9 @@ Official PyTorch implementation of ICCV 2023 Paper "DDColor: Towards Photo-Reali
 [![arXiv](https://img.shields.io/badge/arXiv-2212.11613-b31b1b.svg)](https://arxiv.org/abs/2212.11613)
 [![HuggingFace](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Models-FF8000)](https://huggingface.co/piddnad/DDColor-models)
 [![ModelScope demo](https://img.shields.io/badge/%F0%9F%91%BE%20ModelScope-Demo-8A2BE2)](https://www.modelscope.cn/models/damo/cv_ddcolor_image-colorization/summary)
+[![Replicate](https://replicate.com/piddnad/ddcolor/badge)](https://replicate.com/piddnad/ddcolor)
 ![visitors](https://visitor-badge.laobi.icu/badge?page_id=piddnad/DDColor)
-[![Replicate](https://replicate.com/cjwbw/ddcolor/badge)](https://replicate.com/cjwbw/ddcolor)
+
 
 > Xiaoyang Kang, Tao Yang, Wenqi Ouyang, Peiran Ren, Lingzhi Li, Xuansong Xie
 >
@@ -40,7 +41,11 @@ Official PyTorch implementation of ICCV 2023 Paper "DDColor: Towards Photo-Reali
 
 ## Online Demo
 
-We provide [online demo](https://modelscope.cn/models/damo/cv_ddcolor_image-colorization/summary) via ModelScope. Feel free to try it out!
+We provide ModelScope online demo: [![ModelScope demo](https://img.shields.io/badge/%F0%9F%91%BE%20ModelScope-Demo-8A2BE2)](https://www.modelscope.cn/models/damo/cv_ddcolor_image-colorization/summary)
+
+You can also try the Replicate demo here: [![Replicate](https://replicate.com/piddnad/ddcolor/badge)](https://replicate.com/piddnad/ddcolor) 
+
+Feel free to try it out!
 
 ## Methods
 
