@@ -121,6 +121,20 @@ Or, download the model from [Hugging Face](https://huggingface.co/piddnad/DDColo
 sh scripts/inference.sh
 ```
 
+### Gradio Demo
+
+1. Install the gradio and other required libraries
+
+```python
+!pip install gradio gradio_imageslider timm -q
+```
+
+2. Run the demo
+
+```python
+python gradio_app.py
+```
+
 ## Model Zoo
 
 We provide several different versions of pretrained models, please check out [Model Zoo](MODEL_ZOO.md).
