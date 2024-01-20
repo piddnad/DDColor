@@ -8,6 +8,8 @@ from basicsr.archs.ddcolor_arch_utils.position_encoding import PositionEmbedding
 from basicsr.archs.ddcolor_arch_utils.transformer import Transformer
 from basicsr.utils.registry import ARCH_REGISTRY
 
+from huggingface_hub import PyTorchModelHubMixin
+
 
 @ARCH_REGISTRY.register()
 class DDColor(nn.Module):
@@ -383,3 +385,34 @@ class SingleColorDecoder(nn.Module):
         color_preds = torch.einsum('bqc,bchw->bqhw', color_embed, img_features)
         return color_preds
 
+
+class DDColorHF(DDColor, PyTorchModelHubMixin):
+    def __init__(self, config):
+        super().__init__(**config)
+    
+    def forward(self, x):
+        super().forward(x)
+
+
+config = dict(
+    encoder_name='convnext-t',
+    decoder_name='MultiScaleColorDecoder',
+    input_size=[512, 512],
+    num_output_channels=2,
+    last_norm='Spectral',
+    do_normalize=False,
+    num_queries=100,
+    num_scales=3,
+    dec_layers=9,
+)
+
+model = DDColorHF(config)
+
+# save locally
+model.save_pretrained('ddcolor')
+
+# save to huggingface hub
+model.push_to_hub('nielsr/ddcolor')
+
+# load from huggingface hub
+model = DDColorHF.from_pretrained('nielsr/ddcolor')
