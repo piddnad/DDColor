@@ -8,10 +8,10 @@ from basicsr.archs.ddcolor_arch_utils.position_encoding import PositionEmbedding
 from basicsr.archs.ddcolor_arch_utils.transformer import Transformer
 from basicsr.utils.registry import ARCH_REGISTRY
 
-from huggingface_hub import PyTorchModelHubMixin
+from huggingface_hub import PyTorchModelHubMixin, hf_hub_download
 
 
-@ARCH_REGISTRY.register()
+# @ARCH_REGISTRY.register()
 class DDColor(nn.Module):
 
     def __init__(self,
@@ -394,25 +394,34 @@ class DDColorHF(DDColor, PyTorchModelHubMixin):
         super().forward(x)
 
 
-config = dict(
-    encoder_name='convnext-t',
-    decoder_name='MultiScaleColorDecoder',
-    input_size=[512, 512],
-    num_output_channels=2,
-    last_norm='Spectral',
-    do_normalize=False,
-    num_queries=100,
-    num_scales=3,
-    dec_layers=9,
-)
 
-model = DDColorHF(config)
+if __name__ == "__main__":
+    config = dict(
+        encoder_name='convnext-t',
+        decoder_name='MultiScaleColorDecoder',
+        input_size=[512, 512],
+        num_output_channels=2,
+        last_norm='Spectral',
+        do_normalize=False,
+        num_queries=100,
+        num_scales=3,
+        dec_layers=9,
+    )
 
-# save locally
-model.save_pretrained('ddcolor')
+    model = DDColorHF(config)
 
-# save to huggingface hub
-model.push_to_hub('nielsr/ddcolor')
+    # load weights
+    filepath = hf_hub_download(repo_id="piddnad/DDColor-models", filename="ddcolor_paper_tiny.pth", repo_type="model")
+    state_dict = torch.load(filepath, map_location="cpu")["params"]
+    missing_keys, unexpected_keys = model.load_state_dict(state_dict, strict=False)
+    assert missing_keys == []
+    assert unexpected_keys == ["encoder.arch.head_cls.weight", "encoder.arch.head_cls.bias"]
 
-# load from huggingface hub
-model = DDColorHF.from_pretrained('nielsr/ddcolor')
+    # save locally
+    # model.save_pretrained('ddcolor', config=config)
+
+    # save to huggingface hub
+    model.push_to_hub('nielsr/ddcolor', config=config)
+
+    # load from huggingface hub
+    model = DDColorHF.from_pretrained('nielsr/ddcolor')
