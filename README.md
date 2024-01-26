@@ -29,7 +29,7 @@ Official PyTorch implementation of ICCV 2023 Paper "DDColor: Towards Photo-Reali
 
 ## 🔥 News
 
-* [2024-01-18] Add Replicate demo and API!
+* [2024-01-18] Add Replicate demo and API! Thanks @[Chenxi](https://github.com/chenxwh).
 
 * [2023-12-13] Release the DDColor-tiny pre-trained model!
 
@@ -76,7 +76,7 @@ python3 setup.py develop  # install basicsr
 
 ## Quick Start
 
-### Inference with modelscope library
+### Inference with Modelscope library
 
 1. Install modelscope:
 
@@ -119,6 +119,26 @@ Or, download the model from [Hugging Face](https://huggingface.co/piddnad/DDColo
 2. Run 
 ```
 sh scripts/inference.sh
+```
+
+### Inference with Hugging Face
+
+Now we can load model via Huggingface Hub like this:
+
+```
+from inference.colorization_pipeline_hf import DDColorHF
+
+ddcolor_paper_tiny = DDColorHF.from_pretrained("piddnad/ddcolor_paper_tiny")
+ddcolor_paper      = DDColorHF.from_pretrained("piddnad/ddcolor_paper")
+ddcolor_modelscope = DDColorHF.from_pretrained("piddnad/ddcolor_modelscope")
+ddcolor_artistic   = DDColorHF.from_pretrained("piddnad/ddcolor_artistic")
+```
+
+Check `inference/colorization_pipeline_hf.py` for the details of the inference, or directly perform model inference by simply running:
+
+```
+python inference/colorization_pipeline_hf.py --model_name ddcolor_modelscope
+# model_name: [ddcolor_paper | ddcolor_modelscope | ddcolor_artistic | ddcolor_paper_tiny]
 ```
 
 ### Gradio Demo
