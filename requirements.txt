@@ -11,6 +11,7 @@ torch==1.7.1
 torchvision==0.8.2
 tqdm==4.65.0
 wandb==0.15.5
-transformers==4.28.0
-sentencepiece==0.1.99
 scikit-image==0.22.0
+gradio==4.16.0
+gradio_imageslider==0.0.17
+timm==0.9.2
