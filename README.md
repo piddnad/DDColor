@@ -29,6 +29,8 @@ Official PyTorch implementation of ICCV 2023 Paper "DDColor: Towards Photo-Reali
 
 ## 🔥 News
 
+* [2024-01-28] Support inferencing via Hugging Face! Thanks @[Niels](https://github.com/NielsRogge) for the suggestion and example code and @[Skwara](https://github.com/Skwarson96) for fixing bug.
+
 * [2024-01-18] Add Replicate demo and API! Thanks @[Chenxi](https://github.com/chenxwh).
 
 * [2023-12-13] Release the DDColor-tiny pre-trained model!
@@ -41,11 +43,9 @@ Official PyTorch implementation of ICCV 2023 Paper "DDColor: Towards Photo-Reali
 
 ## Online Demo
 
-We provide ModelScope online demo: [![ModelScope demo](https://img.shields.io/badge/%F0%9F%91%BE%20ModelScope-Demo-8A2BE2)](https://www.modelscope.cn/models/damo/cv_ddcolor_image-colorization/summary)
+We provide online demos through ModelScope at [![ModelScope demo](https://img.shields.io/badge/%F0%9F%91%BE%20ModelScope-Demo-8A2BE2)](https://www.modelscope.cn/models/damo/cv_ddcolor_image-colorization/summary) and Replicate at [![Replicate](https://replicate.com/piddnad/ddcolor/badge)](https://replicate.com/piddnad/ddcolor) .
 
-You can also try the Replicate demo here: [![Replicate](https://replicate.com/piddnad/ddcolor/badge)](https://replicate.com/piddnad/ddcolor) 
-
-Feel free to try it out!
+Feel free to try them out!
 
 ## Methods
 
@@ -137,7 +137,7 @@ ddcolor_artistic   = DDColorHF.from_pretrained("piddnad/ddcolor_artistic")
 Check `inference/colorization_pipeline_hf.py` for the details of the inference, or directly perform model inference by simply running:
 
 ```
-python inference/colorization_pipeline_hf.py --model_name ddcolor_modelscope
+python inference/colorization_pipeline_hf.py --model_name ddcolor_modelscope --input ./assets/test_images
 # model_name: [ddcolor_paper | ddcolor_modelscope | ddcolor_artistic | ddcolor_paper_tiny]
 ```
 
