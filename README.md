@@ -80,7 +80,7 @@ python3 setup.py develop  # install basicsr
 1. Install modelscope:
 
 ```
-pip install "modelscope[cv]" -f https://modelscope.oss-cn-beijing.aliyuncs.com/releases/repo.html
+pip install modelscope
 ```
 
 2. Run the following codes:
