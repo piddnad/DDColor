@@ -11,7 +11,6 @@ import torch.nn.functional as F
 class ImageColorizationPipeline(object):
 
     def __init__(self, model_path, input_size=256, model_size='large'):
-        
         self.input_size = input_size
         if torch.cuda.is_available():
             self.device = torch.device('cuda')
@@ -54,12 +53,13 @@ class ImageColorizationPipeline(object):
         self.model.eval()
 
     @torch.no_grad()
-    def process(self, img):
-        self.height, self.width = img.shape[:2]
-        # print(self.width, self.height)
-        # if self.width * self.height < 100000:
-        #     self.input_size = 256
+    def process(self, img_path):
+        img = cv2.imread(img_path)
+        if img is None:
+            print(f"Error: Unable to load image '{img_path}'. Skipping...")
+            return None
 
+        self.height, self.width = img.shape[:2]
         img = (img / 255.0).astype(np.float32)
         orig_l = cv2.cvtColor(img, cv2.COLOR_BGR2Lab)[:, :, :1]  # (h, w, 1)
 
@@ -77,16 +77,15 @@ class ImageColorizationPipeline(object):
         output_lab = np.concatenate((orig_l, output_ab_resize), axis=-1)
         output_bgr = cv2.cvtColor(output_lab, cv2.COLOR_LAB2BGR)
 
-        output_img = (output_bgr * 255.0).round().astype(np.uint8)    
-
+        output_img = (output_bgr * 255.0).round().astype(np.uint8)
         return output_img
 
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--model_path', type=str, default='pretrain/net_g_200000.pth')
-    parser.add_argument('--input', type=str, default='figure/', help='input test image folder or video path')
-    parser.add_argument('--output', type=str, default='results', help='output folder or video path')
+    parser.add_argument('--model_path', type=str, default='pretrain/ddcolor_modelscope.pth')
+    parser.add_argument('--input', type=str, default='assets/test_images/', help='input test image folder or video path')
+    parser.add_argument('--output', type=str, default='assets/test_images/output/', help='output folder or video path')
     parser.add_argument('--input_size', type=int, default=512, help='input size for model')
     parser.add_argument('--model_size', type=str, default='large', help='ddcolor model size')
     args = parser.parse_args()
@@ -99,9 +98,10 @@ def main():
     colorizer = ImageColorizationPipeline(model_path=args.model_path, input_size=args.input_size, model_size=args.model_size)
 
     for name in tqdm(img_list):
-        img = cv2.imread(os.path.join(args.input, name))
-        image_out = colorizer.process(img)
-        cv2.imwrite(os.path.join(args.output, name), image_out)
+        img_path = os.path.join(args.input, name)
+        output_img = colorizer.process(img_path)
+        if output_img is not None:
+            cv2.imwrite(os.path.join(args.output, name), output_img)
 
 
 if __name__ == '__main__':
