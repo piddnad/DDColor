@@ -66,7 +66,7 @@ Feel free to try them out!
 ### Install with conda (Recommend)
 
 ```
-conda create -n ddcolor python=3.8
+conda create -n ddcolor python=3.9
 conda activate ddcolor
 pip install -r requirements.txt
 
