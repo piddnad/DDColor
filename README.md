@@ -63,11 +63,13 @@ Feel free to try them out!
 - Python >= 3.7
 - PyTorch >= 1.7
 
-### Install with conda (Recommend)
+### Installation with conda (recommended)
 
 ```
 conda create -n ddcolor python=3.9
 conda activate ddcolor
+pip install torch==2.2.0 torchvision==0.17.0 torchaudio==2.2.0 --index-url https://download.pytorch.org/whl/cu118
+
 pip install -r requirements.txt
 
 python3 setup.py develop  # install basicsr
