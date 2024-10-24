@@ -179,6 +179,17 @@ python data_list/get_meta_file.py
 sh scripts/train.sh
 ```
 
+## ONNX export
+Support for ONNX model exports is now available
+```
+python export.py
+usage: export.py [-h] [--input_size INPUT_SIZE] [--batch_size BATCH_SIZE] --model_path MODEL_PATH [--model_size MODEL_SIZE] 
+[--decoder_type DECODER_TYPE] [--export_path EXPORT_PATH] [--opset OPSET]
+export.py: error: the following arguments are required: --model_path
+```
+
+Demo of ONNX export using a `ddcolor_paper_tiny` model is available [here](notebooks/colorization_pipeline_onnxruntime.ipynb).
+
 ## Citation
 
 If our work is helpful for your research, please consider citing:
