@@ -11,6 +11,8 @@ tmp/*
 .vscode
 .github
 
+.onnx
+
 # ignored files
 version.py
 
@@ -133,3 +135,5 @@ venv.bak/
 
 # meta file
 data_list/*.txt
+
+weights/
