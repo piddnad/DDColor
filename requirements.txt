@@ -14,3 +14,5 @@ wandb==0.15.5
 scikit-image==0.22.0
 tensorboard
 huggingface_hub
+ipykernel
+matplotlib
