@@ -186,6 +186,13 @@ Support for ONNX model exports is now available
 pip install onnx==1.16.1 onnxruntime==1.19.2 onnxsim==0.4.36
 ```
 
+### Usage example
+```
+python export.py
+usage: export.py [-h] [--input_size INPUT_SIZE] [--batch_size BATCH_SIZE] --model_path MODEL_PATH [--model_size MODEL_SIZE] 
+[--decoder_type DECODER_TYPE] [--export_path EXPORT_PATH] [--opset OPSET]
+```
+
 Demo of ONNX export using a `ddcolor_paper_tiny` model is available [here](notebooks/colorization_pipeline_onnxruntime.ipynb).
 
 ## Citation
