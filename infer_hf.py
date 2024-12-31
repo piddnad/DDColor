@@ -1,12 +1,12 @@
-import argparse
-import cv2
 import os
-from tqdm import tqdm
+import cv2
 import torch
-from basicsr.archs.ddcolor_arch import DDColor
+import argparse
+from tqdm import tqdm
+from huggingface_hub import PyTorchModelHubMixin
 
-from huggingface_hub import PyTorchModelHubMixin, hf_hub_download
-from inference.colorization_pipeline import ImageColorizationPipeline
+from ddcolor_model import DDColor
+from infer import ImageColorizationPipeline
 
 
 class DDColorHF(DDColor, PyTorchModelHubMixin):
@@ -44,7 +44,12 @@ def main():
 
     args = parser.parse_args()
 
-    ddcolor_model = DDColorHF.from_pretrained(f"piddnad/{args.model_name}")
+    if not os.path.exists(args.model_name):
+        model_name = f"piddnad/{args.model_name}"
+    else:
+        model_name = args.model_name
+
+    ddcolor_model = DDColorHF.from_pretrained(model_name)
 
     print(f"Output path: {args.output}")
     os.makedirs(args.output, exist_ok=True)
