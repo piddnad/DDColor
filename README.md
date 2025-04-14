@@ -13,13 +13,13 @@ Official PyTorch implementation of ICCV 2023 Paper "DDColor: Towards Photo-Reali
 🪄 DDColor can provide vivid and natural colorization for historical black and white old photos.
 
 <p align="center">
-  <img src="assets/teaser.png" width="100%">
+  <img src="assets/teaser.webp" width="100%">
 </p>
 
 🎲 It can even colorize/recolor landscapes from anime games, transforming your animated scenery into a realistic real-life style! (Image source: Genshin Impact)
 
 <p align="center">
-  <img src="assets/anime_landscapes.png" width="100%">
+  <img src="assets/anime_landscapes.webp" width="100%">
 </p>
 
 
