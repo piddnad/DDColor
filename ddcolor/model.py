@@ -27,7 +27,9 @@ class DDColor(nn.Module):
         self.encoder = ImageEncoder(encoder_name, ['norm0', 'norm1', 'norm2', 'norm3'])
         self.encoder.eval()
         test_input = torch.randn(1, num_input_channels, *input_size)
-        self.encoder(test_input)
+
+        with torch.no_grad():
+            self.encoder(test_input)
 
         self.decoder = DuelDecoder(
             self.encoder.hooks,

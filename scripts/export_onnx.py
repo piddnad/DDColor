@@ -1,9 +1,21 @@
-import types
+#!/usr/bin/env python
+"""
+Export DDColor model to ONNX format.
 
+Usage:
+    python scripts/export_onnx.py --model_path pretrain/ddcolor_paper_tiny.pth --export_path weights/ddcolor-tiny.onnx
+"""
+
+import os
+import sys
 import argparse
+
+# Add project root to path for imports
+_project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+if _project_root not in sys.path:
+    sys.path.insert(0, _project_root)
+
 import torch
-import torch.nn.functional as F
-import numpy as np
 import onnx
 import onnxsim
 
@@ -31,19 +43,21 @@ def parse_args():
         "--model_path",
         type=str,
         required=True,
-        help="Path to export ONNX model.",
+        help="Path to the model weights (.pt file).",
     )
     parser.add_argument(
         "--model_size",
         type=str,
         default="tiny",
-        help="Path to export ONNX model.",
+        choices=["tiny", "large"],
+        help="DDColor model size.",
     )
     parser.add_argument(
         "--decoder_type",
         type=str,
         default="MultiScaleColorDecoder",
-        help="Path to export ONNX model.",
+        choices=["MultiScaleColorDecoder", "SingleColorDecoder"],
+        help="Decoder type.",
     )
     parser.add_argument(
         "--export_path",
@@ -58,20 +72,14 @@ def parse_args():
         help="ONNX opset version.",
     )
 
-
     return parser.parse_args()
 
 
 def create_onnx_export(args):
     input_size = args.input_size
     device = torch.device('cpu')
-    if args.model_size == 'tiny':
-        encoder_name = 'convnext-t'
-    else:
-        encoder_name = 'convnext-l'
-
-    # hardcoded in inference/colorization_pipeline.py
-    # decoder_type = "MultiScaleColorDecoder"
+    
+    encoder_name = 'convnext-t' if args.model_size == 'tiny' else 'convnext-l'
 
     if args.decoder_type == 'MultiScaleColorDecoder':
         model = DDColor(
@@ -96,7 +104,7 @@ def create_onnx_export(args):
             num_queries=256,
         ).to(device)
     else:
-        raise("decoder_type not implemented.")
+        raise ValueError(f"decoder_type not implemented: {args.decoder_type}")
 
     model.load_state_dict(
         torch.load(args.model_path, map_location=device)['params'],
@@ -114,41 +122,47 @@ def create_onnx_export(args):
         dynamic_axes[2] = "height"
         dynamic_axes[3] = "width"
     
+    # Create output directory if needed
+    export_dir = os.path.dirname(args.export_path)
+    if export_dir:
+        os.makedirs(export_dir, exist_ok=True)
+    
     torch.onnx.export(
-            model,
-            random_input,
-            args.export_path,
-            opset_version=args.opset,
-            input_names=["input"],
-            output_names=["output"],
-            dynamic_axes={
-                "input": dynamic_axes,
-                "output": dynamic_axes
-            },
-        )
+        model,
+        random_input,
+        args.export_path,
+        opset_version=args.opset,
+        input_names=["input"],
+        output_names=["output"],
+        dynamic_axes={
+            "input": dynamic_axes,
+            "output": dynamic_axes
+        },
+    )
+
 
 def check_onnx_export(export_path):
     save_model(
         shape_inference.infer_shapes(
             load_model(export_path),
-                        check_type=True,
-                        strict_mode=True,
-                        data_prop=True
-
+            check_type=True,
+            strict_mode=True,
+            data_prop=True
         ),
         export_path
     )
 
     save_model(
-        SymbolicShapeInference.infer_shapes(load_model(export_path),
-                                             auto_merge=True,
-                                             guess_output_rank=True
-                                             ),
+        SymbolicShapeInference.infer_shapes(
+            load_model(export_path),
+            auto_merge=True,
+            guess_output_rank=True
+        ),
         export_path,
     )
 
-    model_onnx = onnx.load(export_path)  # load onnx model
-    onnx.checker.check_model(model_onnx)  # check onnx model
+    model_onnx = onnx.load(export_path)
+    onnx.checker.check_model(model_onnx)
 
     model_onnx, check = onnxsim.simplify(model_onnx)
     assert check, "assert check failed"
@@ -160,6 +174,6 @@ if __name__ == '__main__':
 
     create_onnx_export(args)
     print(f'ONNX file successfully created at {args.export_path}')
-    check_onnx_export(args.export_path)
-    print(f'ONNX file at {args.export_path} verifed shapes and simplified')
     
+    check_onnx_export(args.export_path)
+    print(f'ONNX file at {args.export_path} verified shapes and simplified')

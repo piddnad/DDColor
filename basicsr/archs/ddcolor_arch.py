@@ -30,7 +30,9 @@ class DDColor(nn.Module):
         self.encoder = Encoder(encoder_name, ['norm0', 'norm1', 'norm2', 'norm3'], from_pretrain=encoder_from_pretrain)
         self.encoder.eval()
         test_input = torch.randn(1, num_input_channels, *input_size)
-        self.encoder(test_input)
+
+        with torch.no_grad():
+            self.encoder(test_input)
 
         self.decoder = Decoder(
             self.encoder.hooks,

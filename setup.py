@@ -8,6 +8,7 @@ import time
 import torch
 from torch.utils.cpp_extension import BuildExtension, CppExtension, CUDAExtension
 
+VERSION = '1.3.4.6'
 version_file = 'basicsr/version.py'
 
 
@@ -66,11 +67,9 @@ __gitsha__ = '{}'
 version_info = ({})
 """
     sha = get_hash()
-    with open('VERSION', 'r') as f:
-        SHORT_VERSION = f.read().strip()
-    VERSION_INFO = ', '.join([x if x.isdigit() else f'"{x}"' for x in SHORT_VERSION.split('.')])
+    VERSION_INFO = ', '.join([x if x.isdigit() else f'"{x}"' for x in VERSION.split('.')])
 
-    version_file_str = content.format(time.asctime(), SHORT_VERSION, sha, VERSION_INFO)
+    version_file_str = content.format(time.asctime(), VERSION, sha, VERSION_INFO)
     with open(version_file, 'w') as f:
         f.write(version_file_str)
 

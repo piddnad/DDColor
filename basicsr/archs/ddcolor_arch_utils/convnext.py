@@ -9,7 +9,58 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from timm.models.layers import trunc_normal_, DropPath
+
+# ---- Optional dependency: timm ----
+# This file only needs two small helpers from timm: `trunc_normal_` and `DropPath`.
+# To reduce inference dependencies, we provide a pure-PyTorch fallback implementation.
+try:
+    from timm.layers import trunc_normal_, DropPath  # type: ignore
+except Exception:
+    import math
+
+    def trunc_normal_(tensor, mean=0.0, std=1.0, a=-2.0, b=2.0):
+        """Fills the input Tensor with values drawn from a truncated normal distribution.
+
+        Fallback implementation when timm is not available.
+        """
+        # Prefer PyTorch built-in if present
+        if hasattr(torch.nn.init, "trunc_normal_"):
+            return torch.nn.init.trunc_normal_(tensor, mean=mean, std=std, a=a, b=b)
+
+        # Based on PyTorch's internal implementation pattern
+        def norm_cdf(x):
+            return (1.0 + math.erf(x / math.sqrt(2.0))) / 2.0
+
+        with torch.no_grad():
+            l = norm_cdf((a - mean) / std)
+            u = norm_cdf((b - mean) / std)
+
+            tensor.uniform_(2 * l - 1, 2 * u - 1)
+            tensor.erfinv_()
+
+            tensor.mul_(std * math.sqrt(2.0))
+            tensor.add_(mean)
+            tensor.clamp_(min=a, max=b)
+            return tensor
+
+
+    class DropPath(nn.Module):
+        """Stochastic Depth per sample (when applied in main path of residual blocks)."""
+
+        def __init__(self, drop_prob: float = 0.0):
+            super().__init__()
+            self.drop_prob = float(drop_prob)
+
+        def forward(self, x):
+            if self.drop_prob == 0.0 or not self.training:
+                return x
+            keep_prob = 1.0 - self.drop_prob
+            shape = (x.shape[0],) + (1,) * (x.ndim - 1)
+            random_tensor = keep_prob + torch.rand(
+                shape, dtype=x.dtype, device=x.device
+            )
+            random_tensor.floor_()
+            return x.div(keep_prob) * random_tensor
 
 class Block(nn.Module):
     r""" ConvNeXt Block. There are two equivalent implementations:

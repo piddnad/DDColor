@@ -54,12 +54,13 @@ Try our online demos at [ModelScope](https://www.modelscope.cn/models/damo/cv_dd
 ```sh
 conda create -n ddcolor python=3.9
 conda activate ddcolor
-pip install torch==2.2.0 torchvision==0.17.0 torchaudio==2.2.0 --index-url https://download.pytorch.org/whl/cu118
+pip install torch==2.2.0 torchvision==0.17.0 --index-url https://download.pytorch.org/whl/cu118
 
 pip install -r requirements.txt
 
-# Install basicsr, only required for training
-python3 setup.py develop  
+# For training, install the following additional dependencies and basicsr
+pip install -r requirements.train.txt
+python3 setup.py develop
 ```
 
 ## Quick Start
@@ -76,7 +77,7 @@ print('model assets saved to %s' % model_dir)
 2.	Run inference with
 
 ```sh
-python infer.py --model_path ./modelscope/damo/cv_ddcolor_image-colorization/pytorch_model.pt --input ./assets/test_images
+python scripts/infer.py --model_path ./modelscope/damo/cv_ddcolor_image-colorization/pytorch_model.pt --input ./assets/test_images
 ```
 or
 ```sh
@@ -87,7 +88,14 @@ sh scripts/inference.sh
 Load the model via Hugging Face Hub:
 
 ```python
-from infer_hf import DDColorHF
+from huggingface_hub import PyTorchModelHubMixin
+from ddcolor import DDColor
+
+class DDColorHF(DDColor, PyTorchModelHubMixin):
+    def __init__(self, config=None, **kwargs):
+        if isinstance(config, dict):
+            kwargs = {**config, **kwargs}
+        super().__init__(**kwargs)
 
 ddcolor_paper_tiny = DDColorHF.from_pretrained("piddnad/ddcolor_paper_tiny")
 ddcolor_paper      = DDColorHF.from_pretrained("piddnad/ddcolor_paper")
@@ -95,10 +103,10 @@ ddcolor_modelscope = DDColorHF.from_pretrained("piddnad/ddcolor_modelscope")
 ddcolor_artistic   = DDColorHF.from_pretrained("piddnad/ddcolor_artistic")
 ```
 
-Check `infer_hf.py` for the details of the inference, or directly perform model inference by running:
+Or directly perform model inference by running:
 
 ```sh
-python infer_hf.py --model_name ddcolor_modelscope --input ./assets/test_images
+python scripts/infer.py --model_name ddcolor_modelscope --input ./assets/test_images
 # model_name: [ddcolor_paper | ddcolor_modelscope | ddcolor_artistic | ddcolor_paper_tiny]
 ```
 
@@ -128,13 +136,13 @@ This code will automatically download the `ddcolor_modelscope` model (see [Model
 Install the gradio and other required libraries:
 
 ```sh
-pip install gradio gradio_imageslider timm
+pip install gradio gradio_imageslider
 ```
 
 Then, you can run the demo with the following command:
 
 ```sh
-python gradio_app.py
+python demo/gradio_app.py
 ```
 
 ## Model Zoo
@@ -145,7 +153,7 @@ We provide several different versions of pretrained models, please check out [Mo
 1. Dataset Preparation: Download the [ImageNet](https://www.image-net.org/) dataset or create a custom dataset. Use this script to obtain the dataset list file:
 
 ```sh
-python data_list/get_meta_file.py
+python scripts/get_meta_file.py
 ```
 
 2. Download the pretrained weights for [ConvNeXt](https://dl.fbaipublicfiles.com/convnext/convnext_large_22k_224.pth) and [InceptionV3](https://download.pytorch.org/models/inception_v3_google-1a9a5a14.pth) and place them in the `pretrain` folder.
@@ -170,12 +178,10 @@ pip install onnx==1.16.1 onnxruntime==1.19.2 onnxsim==0.4.36
 2. Usage example:
 
 ```sh
-python export.py
-usage: export.py [-h] [--input_size INPUT_SIZE] [--batch_size BATCH_SIZE] --model_path MODEL_PATH [--model_size MODEL_SIZE] 
-[--decoder_type DECODER_TYPE] [--export_path EXPORT_PATH] [--opset OPSET]
+python scripts/export_onnx.py --model_path pretrain/ddcolor_paper_tiny.pth --export_path weights/ddcolor-tiny.onnx
 ```
 
-Demo of ONNX export using a `ddcolor_paper_tiny` model is available [here](notebooks/colorization_pipeline_onnxruntime.ipynb).
+Demo of ONNX export using a `ddcolor_paper_tiny` model is available [here](demo/colorization_pipeline_onnxruntime.ipynb).
 
 
 ## Citation

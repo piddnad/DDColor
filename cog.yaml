@@ -16,10 +16,9 @@ build:
     - Pillow==10.1.0
     - PyYAML==6.0.1
     - scipy==1.11.4
-    - timm==0.9.12
     - tqdm==4.65.0
     - scikit-image==0.22.0
     - ipython
   run:
     - pip install dlib
-predict: "predict.py:Predictor"
+predict: "demo/cog_predict.py:Predictor"
